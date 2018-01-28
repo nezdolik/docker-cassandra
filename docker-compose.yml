@@ -37,15 +37,15 @@ services:
        - cassandra-1
      ports:
        #internode communication
-       - 7000:7000
+       - 27000:7000
        #tls internode communication
-       - 7001:7001
+       - 27001:7001
        #jmx
-       - 7199:7199
+       - 27199:7199
        #cql
-       - 9042:9042
+       - 29042:9042
        #thrift
-       - 9160:9160
+       - 29160:9160
      volumes:
        - ./n2data:/var/lib/cassandra
 
@@ -62,14 +62,14 @@ services:
        - cassandra-1
      ports:
        #internode communication
-       - 7000:7000
+       - 37000:7000
        #tls internode communication
-       - 7001:7001
+       - 37001:7001
        #jmx
-       - 7199:7199
+       - 37199:7199
        #cql
-       - 9042:9042
+       - 39042:9042
        #thrift
-       - 9160:9160
+       - 39160:9160
      volumes:
        - ./n3data:/var/lib/cassandra
