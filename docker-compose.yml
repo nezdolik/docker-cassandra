@@ -1,64 +1,75 @@
-#Config per cassandra node
-cassandra-1:
-  hostname: cassandra-1
-  image: cassandra:latest
-  command: /bin/bash -c "sleep 1 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
-  environment:
-    - CASSANDRA_CLUSTER_NAME=Cluster1
-    - MAX_HEAP_SIZE=2G
-    - HEAP_NEWSIZE=400M
-  expose:
-    #internode communication
-    - 7000
-    #tls internode communication
-    - 7001
-    #jmx
-    - 7199
-    #cql
-    - 9042
-    #thrift
-    - 9160
-  #Maps cassandra data to local folder. Data is preserved across container restarts
-  volumes:
-    - ./n1data:/var/lib/cassandra
+version: '2'
+services:
+  #Config per cassandra node
+   cassandra-1:
+     hostname: cassandra-1
+     image: cassandra:latest
+     command: /bin/bash -c "sleep 1 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+     environment:
+       - CASSANDRA_CLUSTER_NAME=Cluster1
+       - MAX_HEAP_SIZE=2G
+       - HEAP_NEWSIZE=400M
+     ports:
+       #internode communication
+       - 7000:7000
+       #tls internode communication
+       - 7001:7001
+       #jmx
+       - 7199:7199
+       #cql
+       - 9042:9042
+       #thrift
+       - 9160:9160
+     #Maps cassandra data to local folder. Data is preserved across container restarts
+     volumes:
+       - ./n1data:/var/lib/cassandra
 
-cassandra-2:
-  hostname: cassandra-2
-  image: cassandra:latest
-  command: /bin/bash -c "sleep 30 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
-  environment:
-    - CASSANDRA_CLUSTER_NAME=Cluster1
-    - MAX_HEAP_SIZE=2G
-    - HEAP_NEWSIZE=400M
-    - CASSANDRA_SEEDS=cassandra-1
-  links:
-    - cassandra-1
-  expose:
-    - 7000
-    - 7001
-    - 7199
-    - 9042
-    - 9160
-  volumes:
-    - ./n2data:/var/lib/cassandra
-  
-cassandra-3:
-  hostname: cassandra-3
-  image: cassandra:latest
-  command: /bin/bash -c "sleep 90 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
-  environment:
-    - CASSANDRA_CLUSTER_NAME=Cluster1
-    - MAX_HEAP_SIZE=2G
-    - HEAP_NEWSIZE=400M
-    - CASSANDRA_SEEDS=cassandra-1
-  links:
-    - cassandra-1
-  expose:
-    - 7000
-    - 7001
-    - 7199
-    - 9042
-    - 9160
-  volumes:
-    - ./n3data:/var/lib/cassandra
+   cassandra-2:
+     hostname: cassandra-2
+     image: cassandra:latest
+     command: /bin/bash -c "sleep 30 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+     environment:
+       - CASSANDRA_CLUSTER_NAME=Cluster1
+       - MAX_HEAP_SIZE=2G
+       - HEAP_NEWSIZE=400M
+       - CASSANDRA_SEEDS=cassandra-1
+     links:
+       - cassandra-1
+     ports:
+       #internode communication
+       - 7000:7000
+       #tls internode communication
+       - 7001:7001
+       #jmx
+       - 7199:7199
+       #cql
+       - 9042:9042
+       #thrift
+       - 9160:9160
+     volumes:
+       - ./n2data:/var/lib/cassandra
 
+   cassandra-3:
+     hostname: cassandra-3
+     image: cassandra:latest
+     command: /bin/bash -c "sleep 90 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+     environment:
+       - CASSANDRA_CLUSTER_NAME=Cluster1
+       - MAX_HEAP_SIZE=2G
+       - HEAP_NEWSIZE=400M
+       - CASSANDRA_SEEDS=cassandra-1
+     links:
+       - cassandra-1
+     ports:
+       #internode communication
+       - 7000:7000
+       #tls internode communication
+       - 7001:7001
+       #jmx
+       - 7199:7199
+       #cql
+       - 9042:9042
+       #thrift
+       - 9160:9160
+     volumes:
+       - ./n3data:/var/lib/cassandra
