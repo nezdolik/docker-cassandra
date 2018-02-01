@@ -9,6 +9,9 @@ services:
        - CASSANDRA_CLUSTER_NAME=Cluster1
        - MAX_HEAP_SIZE=2G
        - HEAP_NEWSIZE=400M
+       #jmx
+       - LOCAL_JMX=no
+       - JVM_EXTRA_OPTS=-Djava.rmi.server.hostname=127.0.0.1
      ports:
        #internode communication
        - 7000:7000
@@ -23,6 +26,8 @@ services:
      #Maps cassandra data to local folder. Data is preserved across container restarts
      volumes:
        - ./n1data:/var/lib/cassandra
+       - ./cassandra/jmxremote.access:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/management/jmxremote.access
+       - ./cassandra/jmxremote.password:/etc/cassandra/jmxremote.password
 
    cassandra-2:
      hostname: cassandra-2
@@ -33,6 +38,9 @@ services:
        - MAX_HEAP_SIZE=2G
        - HEAP_NEWSIZE=400M
        - CASSANDRA_SEEDS=cassandra-1
+       #jmx
+       - LOCAL_JMX=no
+       - JVM_EXTRA_OPTS=-Djava.rmi.server.hostname=127.0.0.1
      links:
        - cassandra-1
      ports:
@@ -58,6 +66,9 @@ services:
        - MAX_HEAP_SIZE=2G
        - HEAP_NEWSIZE=400M
        - CASSANDRA_SEEDS=cassandra-1
+       #jmx
+       - LOCAL_JMX=no
+       - JVM_EXTRA_OPTS=-Djava.rmi.server.hostname=127.0.0.1
      links:
        - cassandra-1
      ports:
