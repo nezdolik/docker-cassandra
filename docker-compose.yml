@@ -6,6 +6,7 @@ services:
      image: cassandra:latest
      command: /bin/bash -c "sleep 1 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
      environment:
+       - VIRTUAL_HOST=n1.cluster1.net
        - CASSANDRA_CLUSTER_NAME=Cluster1
        - MAX_HEAP_SIZE=2G
        - HEAP_NEWSIZE=400M
