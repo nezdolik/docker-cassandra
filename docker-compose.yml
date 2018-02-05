@@ -12,7 +12,11 @@ services:
        - HEAP_NEWSIZE=400M
        #jmx
        - LOCAL_JMX=no
+       - JVM_EXTRA_OPTS=-Dcom.sun.management.jmxremote.port=7199
+       - JVM_EXTRA_OPTS=-Dcom.sun.management.jmxremote.rmi.port=7199       
        - JVM_EXTRA_OPTS=-Djava.rmi.server.hostname=127.0.0.1
+       - JVM_EXTRA_OPTS=-Dcom.sun.management.jmxremote.authenticate=true
+
      ports:
        #internode communication
        - 7000:7000
